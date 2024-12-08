@@ -165,7 +165,6 @@ async function addProduct() {
     }
 
     const product = { nome: name, descricao: description, preco: price };
-    console.log("Dados enviados:", product); // Depuração
 
     try {
         const response = await fetch(`${API_BASE_URL}/produtos`, {
@@ -614,8 +613,6 @@ async function finalizeSale() {
             preco: item.preco_unitario, // Inclui o preço do produto
         })), // Mapeia os itens para o formato esperado
     };
-
-    console.log(saleData);
 
     try {
         const response = await fetch(`${API_BASE_URL}/vendas`, {
