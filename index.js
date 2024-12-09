@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 fetchProducts(); // Atualiza a lista de produtos
                 break;
             case "stocks":
+                loadProducts(); // Atualiza a lista de produtos no formulário de estoques
                 loadStocks(); // Atualiza os dados de estoques
                 break;
             case "sales":
@@ -288,6 +289,17 @@ async function loadProducts() {
         const data = await response.json();
         const products = data.produtos || [];
 
+        // Limpa as opções existentes no dropdown
+        productSelect.innerHTML = '';
+
+        // Adiciona a opção inicial vazia
+        const emptyOption = document.createElement('option');
+        emptyOption.value = ''; // Valor vazio
+        emptyOption.textContent = 'Selecione'; // Texto visível
+        emptyOption.disabled = true; // Impede seleção
+        emptyOption.selected = true; // Define como a opção padrão
+        productSelect.appendChild(emptyOption);          
+
         // Preenche o dropdown de produtos
         products.forEach(product => {
             const option = document.createElement('option');
@@ -485,7 +497,6 @@ function clearFormStock() {
 stockForm.addEventListener('submit', addStock);
 
 // Carrega os produtos ao iniciar a página
-loadProducts();
 loadStocks();
 // Fim Estoque 
 
