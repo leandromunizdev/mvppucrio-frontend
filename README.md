@@ -1,6 +1,6 @@
 # VestSoft - Aplicação para Loja de Roupas
 
-Uma interface desenvolvida em html 5, javascript e css que gerencia o cadastramento de produtos, controle de estoque e registro de vendas de uma loja de roupas. O projeto tem como objetivo oferecer uma solução prática e eficiente para a administração de pequenos comércios.
+Uma interface desenvolvida em HTML 5, JavaScript e CSS que gerencia o cadastramento de produtos, controle de estoque e registro de vendas de uma loja de roupas. O projeto tem como objetivo oferecer uma solução prática e eficiente para a administração de pequenos comércios.
 
 ---
 
