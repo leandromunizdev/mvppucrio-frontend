@@ -1,6 +1,6 @@
-# VestSoft - API Python para Loja de Roupas
+# VestSoft - Aplicação para Loja de Roupas
 
-Uma API desenvolvida em Python que gerencia o cadastramento de produtos, controle de estoque e registro de vendas de uma loja de roupas. O projeto tem como objetivo oferecer uma solução prática e eficiente para a administração de pequenos comércios.
+Uma interface desenvolvida em html 5, javascript e css que gerencia o cadastramento de produtos, controle de estoque e registro de vendas de uma loja de roupas. O projeto tem como objetivo oferecer uma solução prática e eficiente para a administração de pequenos comércios.
 
 ---
 
@@ -9,7 +9,6 @@ Uma API desenvolvida em Python que gerencia o cadastramento de produtos, control
 - **Cadastro de Produtos:** Adiciona e gerencia informações de produtos.
 - **Controle de Estoque:** Monitora a quantidade de itens disponíveis.
 - **Registro de Vendas:** Processa e armazena informações das vendas realizadas.
-- **Documentação Integrada:** Acessível via OpenAPI para consulta e testes.
 
 ## Pré-requisitos
 
