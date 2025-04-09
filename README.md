@@ -12,15 +12,7 @@ Uma interface desenvolvida em HTML 5, JavaScript e CSS que gerencia o cadastrame
 
 ## Diagrama da solução
 
-flowchart TD
-A[Frontend<br/>(HTML, CSS, JS)]
-B[Backend API<br/>(Flask)]
-C[Banco de Dados<br/>(SQLite / SQLAlchemy)]
-D[API Externa<br/>(ViaCEP)]
-
-    A --> |Requisições HTTP / AJAX| B
-    B --> |Consultas/Atualizações via SQLAlchemy| C
-    A --> |Consulta de CEP via AJAX| D
+![Diagrama de Arquitetura](diagrama-arquitetura.png)
 
 ## Pré-requisitos
 
