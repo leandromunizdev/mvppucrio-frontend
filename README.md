@@ -1,23 +1,81 @@
+# VestSoft - API Python para Loja de Roupas
 
-# VestSoft 
-# Front-end para Loja de Roupas
-
-Gerencia o cadastramento de produtos, estoque e vendas de uma loja.
+Uma API desenvolvida em Python que gerencia o cadastramento de produtos, controle de estoque e registro de vendas de uma loja de roupas. O projeto tem como objetivo oferecer uma solução prática e eficiente para a administração de pequenos comércios.
 
 ---
 
-## Configuração
+## Funcionalidades
 
-1. No arquivo index.js altere a const API_BASE_URL com a url da api em execução,
-   por exemplo: "http://localhost:5000".
+- **Cadastro de Produtos:** Adiciona e gerencia informações de produtos.
+- **Controle de Estoque:** Monitora a quantidade de itens disponíveis.
+- **Registro de Vendas:** Processa e armazena informações das vendas realizadas.
+- **Documentação Integrada:** Acessível via OpenAPI para consulta e testes.
+
+## Pré-requisitos
+
+- **Navegador Web** instalado.
 
 ---
 
-## Executando
+## Instalação
+
+Para configurar o ambiente de desenvolvimento e instalar as dependências do projeto, siga os passos abaixo:
+
+1. **Clone o Repositório:**
+
+   ```bash
+   git clone https://github.com/leandromunizdev/mvppucrio-frontend.git
+   cd nome-do-repositorio
+
+   ```
+
+2. No arquivo index.js altere a const API_BASE_URL com a url da api em execução, por exemplo:
+   "http://localhost:5000".
+
+---
+
+# Execução
+
+## Executando localmente
 
 1. Abra o arquivo index.html no seu navegador de preferência.
 
+## Executando via Docker
+
+### Utilizando o Dockerfile
+
+1. Construa a imagem Docker:
+
+   ```bash
+   docker build -t vestsoft-app .
+   ```
+
+2. Execute o container:
+   ```bash
+   docker run -p 80:80 vestsoft-app
+   ```
+3. A aplicação estará disponível na seguinte URL:
+
+   ```
+   http://localhost ou http://localhost:<PORTA>
+   ```
+
+### Utilizando o docker-compose-yml
+
+1. Construa e inicie os serviços:
+
+   ```bash
+   docker-compose up --build
+   ```
+
+2. A aplicação estará disponível na seguinte URL:
+
+   ```
+   http://localhost ou http://localhost:<PORTA>
+   ```
+
 ---
 
+# Licença
 
-
+Este projeto é distribuído sob a licença MIT.
