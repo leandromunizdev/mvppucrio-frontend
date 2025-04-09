@@ -10,6 +10,18 @@ Uma interface desenvolvida em HTML 5, JavaScript e CSS que gerencia o cadastrame
 - **Controle de Estoque:** Monitora a quantidade de itens disponíveis.
 - **Registro de Vendas:** Processa e armazena informações das vendas realizadas.
 
+## Diagrama da solução
+
+flowchart TD
+A[Frontend<br/>(HTML, CSS, JS)]
+B[Backend API<br/>(Flask)]
+C[Banco de Dados<br/>(SQLite / SQLAlchemy)]
+D[API Externa<br/>(ViaCEP)]
+
+    A --> |Requisições HTTP / AJAX| B
+    B --> |Consultas/Atualizações via SQLAlchemy| C
+    A --> |Consulta de CEP via AJAX| D
+
 ## Pré-requisitos
 
 - **Navegador Web** instalado.

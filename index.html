@@ -2,159 +2,211 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VestSoft | Sistema de Gestão de Loja, vendas de roupas e acessórios </title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VestSoft | Sistema de Gestão de Loja, vendas de roupas e acessórios</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="#" data-page="start">Início</a></li>
-                <li><a href="#" data-page="products">Produtos</a></li>
-                <li><a href="#" data-page="stocks">Estoques</a></li>
-                <li><a href="#" data-page="sales">Vendas</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main id="app">
-        <!-- Seção Inicial -->
-        <section id="start" class="page">
-            <h1>Bem-vindo ao VestSoft, sistema de gestão para lojas de vendas (roupas e acessórios)</h1>
-            <p>Utilize o menu acima para navegar pelas páginas do sistema.</p>
-            <div id="dashboard" class="dashboard">
-                <div class="card" id="totalVendas">
-                    <h2>Total de Vendas</h2>
-                    <p>R$ <span id="valorTotalVendas">0.00</span></p>
-                </div>
-                <div class="card" id="totalProdutos">
-                    <h2>Total de Produtos</h2>
-                    <p><span id="valorTotalProdutos">0</span></p>
-                </div>
-                <div class="card" id="totalEstoque">
-                    <h2>Total de Estoque</h2>
-                    <p><span id="valorTotalEstoque">0</span> itens</p>
-                </div>
-            </div>
-        </section>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="#" data-page="start">Início</a></li>
+        <li><a href="#" data-page="products">Produtos</a></li>
+        <li><a href="#" data-page="stocks">Estoques</a></li>
+        <li><a href="#" data-page="sales">Vendas</a></li>
+      </ul>
+    </nav>
+  </header>
 
-        <!-- Seção Produtos -->
-        <section id="products" class="page hidden">
-            <h1>Gestão de Produtos</h1>
-            <form class="form-container" id="productForm">
-                <label for="productName">Nome do Produto:</label>
-                <input type="text" id="productName" name="productName" maxlength="40" required />
+  <main id="app">
+    <!-- Seção Inicial -->
+    <section id="start" class="page">
+      <h1>Bem-vindo ao VestSoft, sistema de gestão para lojas de vendas (roupas e acessórios)</h1>
+      <p>Utilize o menu acima para navegar pelas páginas do sistema.</p>
+      <div id="dashboard" class="dashboard">
+        <div class="card" id="totalVendas">
+          <h2>Total de Vendas</h2>
+          <p>R$ <span id="valorTotalVendas">0.00</span></p>
+        </div>
+        <div class="card" id="totalProdutos">
+          <h2>Total de Produtos</h2>
+          <p><span id="valorTotalProdutos">0</span></p>
+        </div>
+        <div class="card" id="totalEstoque">
+          <h2>Total de Estoque</h2>
+          <p><span id="valorTotalEstoque">0</span> itens</p>
+        </div>
+      </div>
+    </section>
 
-                <label for="productDescription">Descrição do Produto:</label>
-                <textarea id="productDescription" name="productDescription" maxlength="150" required></textarea>
+    <!-- Seção Produtos -->
+    <section id="products" class="page hidden">
+      <h1>Gestão de Produtos</h1>
+      <form class="form-container" id="productForm">
+        <label for="productName">Nome do Produto:</label>
+        <input type="text" id="productName" name="productName" maxlength="40" required />
 
-                <label for="productPrice">Preço:</label>
-                <input type="text" id="productPrice" name="productPrice" pattern="^\d+(\.\d{1,2})?$"
-                    placeholder="Ex: 100.00" required />
+        <label for="productDescription">Descrição do Produto:</label>
+        <textarea id="productDescription" name="productDescription" maxlength="150" required></textarea>
 
-                <button type="submit" id="addProduct">Adicionar Produto</button>
-            </form>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Descrição</th>
-                        <th>Preço</th>
-                        <th>Saldo</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="productTableBody"></tbody>
-            </table>
-        </section>
+        <label for="productPrice">Preço:</label>
+        <input type="text" id="productPrice" name="productPrice" pattern="^\d+(\.\d{1,2})?$" 
+               placeholder="Ex: 100.00" required />
 
-        <!-- Seção Estoques -->
-        <section id="stocks" class="page hidden">
-            <h1>Cadastro de Estoque</h1>
-            <form class="form-container" id="stockForm">
-                <label for="productSelect">Produto:</label>
-                <select id="productSelect" name="produto_id" required>
-                    <option value="">Selecione um produto</option>
-                </select>
+        <button type="submit" id="addProduct">Adicionar Produto</button>
+      </form>
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Preço</th>
+            <th>Saldo</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="productTableBody"></tbody>
+      </table>
+    </section>
 
-                <label for="invoiceNumber">Número da Nota Fiscal:</label>
-                <input type="text" id="invoiceNumber" name="numero_nota_fiscal" maxlength="20" required />
+    <!-- Seção Estoques -->
+    <section id="stocks" class="page hidden">
+      <h1>Cadastro de Estoque</h1>
+      <form class="form-container" id="stockForm">
+        <label for="productSelect">Produto:</label>
+        <select id="productSelect" name="produto_id" required>
+          <option value="">Selecione um produto</option>
+        </select>
 
-                <label for="entryDate">Data de Entrada:</label>
-                <input type="datetime-local" id="entryDate" name="data_entrada" required />
+        <label for="invoiceNumber">Número da Nota Fiscal:</label>
+        <input type="text" id="invoiceNumber" name="numero_nota_fiscal" maxlength="20" required />
 
-                <label for="quantity">Quantidade:</label>
-                <input type="number" id="quantity" name="quantidade" min="1" required />
+        <label for="entryDate">Data de Entrada:</label>
+        <input type="datetime-local" id="entryDate" name="data_entrada" required />
 
-                <button type="submit" id="addStock">Cadastrar Estoque</button>
-            </form>
+        <label for="quantity">Quantidade:</label>
+        <input type="number" id="quantity" name="quantidade" min="1" required />
 
-            <h2>Lista de Estoques</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Produto</th>
-                        <th>Nota Fiscal</th>
-                        <th>Data de Entrada</th>
-                        <th>Quantidade</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="stockTableBody">
-                    <!-- Os estoques serão adicionados dinamicamente -->
-                </tbody>
-            </table>
-        </section>
+        <button type="submit" id="addStock">Cadastrar Estoque</button>
+      </form>
 
-        <!-- Seção Vendas -->
-        <section id="sales" class="page hidden">
-            <h1>Cadastro de Vendas</h1>
+      <h2>Lista de Estoques</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Produto</th>
+            <th>Nota Fiscal</th>
+            <th>Data de Entrada</th>
+            <th>Quantidade</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="stockTableBody">
+          <!-- Os estoques serão adicionados dinamicamente -->
+        </tbody>
+      </table>
+    </section>
 
-            <form id="salesForm" class="form-container">
-                <label for="saleCode">Código da Venda:</label>
-                <input type="text" id="saleCode" readonly />
+    <!-- Seção Vendas -->
+    <section id="sales" class="page hidden">
+      <h1>Cadastro de Vendas</h1>
 
-                <label for="productSaleSelect">Produto:</label>
-                <select id="productSaleSelect" required>
-                    <option value="">Selecione um produto</option>
-                </select>
+      <form id="salesForm" class="form-container">
+        <label for="saleCode">Código da Venda:</label>
+        <input type="text" id="saleCode" readonly />
 
-                <label for="quantitySale">Quantidade:</label>
-                <input type="number" id="quantitySale" min="1" required />
+        <label for="productSaleSelect">Produto:</label>
+        <select id="productSaleSelect" required>
+          <option value="">Selecione um produto</option>
+        </select>
 
-                <button type="button" id="addItem">Adicionar Item</button>
-            </form>
+        <label for="quantitySale">Quantidade:</label>
+        <input type="number" id="quantitySale" min="1" required />
 
-            <h2>Itens da Venda</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Produto</th>
-                        <th>Quantidade</th>
-                        <th>Preço Unitário</th>
-                        <th>Total</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="salesTableBody">
-                    <!-- Itens da venda serão adicionados dinamicamente -->
-                </tbody>
-            </table>
+        <button type="button" id="addItem">Adicionar Item</button>
+      </form>
 
-            <h3>Subtotal: R$ <span id="subtotal">0.00</span></h3>
+      <h2>Itens da Venda</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Preço Unitário</th>
+            <th>Total</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="salesTableBody">
+          <!-- Itens da venda serão adicionados dinamicamente -->
+        </tbody>
+      </table>
 
-            <button type="button" id="finalizeSale">Finalizar Venda</button>
-        </section>
+      <h3>Subtotal: R$ <span id="subtotal">0.00</span></h3>
 
-        <!-- Seção Sobre -->
-        <section id="sobre" class="page hidden">
-            <h1>Sobre</h1>
-            <p>Informações sobre o sistema.</p>
-        </section>
-    </main>
-    <script src="index.js"></script>
+      <fieldset class="delivery-fieldset">
+        <legend>Tipo de Entrega</legend>
+        <input type="radio" id="retirada" name="deliveryType" value="retirada" checked>
+        <label for="retirada">Retirada na Loja</label>
+        <input type="radio" id="entrega" name="deliveryType" value="entrega">
+        <label for="entrega">Entrega</label>
+      </fieldset>
+
+      <!-- Campos de frete, exibidos se "Entrega" for selecionado -->
+      <div id="shippingInfo" class="shipping-container" style="display: none;">
+        <h3>Informações para Frete</h3>
+
+        <div class="form-row">
+          <label for="cep">CEP:</label>
+          <div>
+            <input type="text" id="cep" name="cep" maxlength="9" pattern="\d{5}-?\d{3}" />
+            <button type="button" id="consultaCEP">Consultar CEP</button>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label for="logradouro">Logradouro:</label>
+          <input type="text" id="logradouro" name="logradouro" />
+        </div>
+
+        <div class="form-row">
+          <label for="numero">Número:</label>
+          <input type="number" id="numero" name="numero" min="1" />
+        </div>
+
+        <div class="form-row">
+          <label for="complemento">Complemento:</label>
+          <textarea id="complemento" name="complemento" rows="2"></textarea>
+        </div>
+
+        <div class="form-row">
+          <label for="bairro">Bairro:</label>
+          <input type="text" id="bairro" name="bairro" />
+        </div>
+
+        <div class="form-row">
+          <label for="cidade">Cidade:</label>
+          <input type="text" id="cidade" name="cidade" />
+        </div>
+
+        <div class="form-row">
+          <label for="uf">UF:</label>
+          <input type="text" id="uf" name="uf" maxlength="2" />
+        </div>
+      </div>
+
+      <button type="button" id="finalizeSale">Finalizar Venda</button>
+    </section>
+
+    <!-- Seção Sobre -->
+    <section id="sobre" class="page hidden">
+      <h1>Sobre</h1>
+      <p>Informações sobre o sistema.</p>
+    </section>
+  </main>
+
+  <script src="index.js"></script>
 </body>
-
 </html>

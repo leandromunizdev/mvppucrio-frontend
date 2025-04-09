@@ -215,3 +215,61 @@ textarea:valid {
     font-weight: bold;
     color: #007bff;
 }
+
+/* Exemplo de organização para os campos no container de frete */
+.shipping-container {
+    margin-top: 1rem;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    background-color: #f8f8f8;
+  }
+  
+  .shipping-container h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+  
+  /* Cada linha do formulário de frete */
+  .form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  
+  .form-row label {
+    width: 100px;
+    font-weight: bold;
+    margin-right: 0.5rem;
+  }
+  
+  .form-row input[type="text"],
+  .form-row input[type="number"],
+  .form-row textarea {
+    flex: 1;
+    padding: 0.3rem;
+  }
+  
+  /* Para o CEP + botão "Consultar CEP" */
+  .form-row > div {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Pequeno ajuste no botão de CEP */
+  #consultaCEP {
+    margin-left: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    cursor: pointer;
+  }
+  
+  /* Fieldset da entrega */
+  .delivery-fieldset {
+    margin: 1rem 0;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+  }
+  
+  /* Exemplo: "hidden" para ocultar seções não ativas */
+  .hidden {
+    display: none;
+  }

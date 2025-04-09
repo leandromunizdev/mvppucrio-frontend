@@ -11,10 +11,10 @@ document.addEventListener("DOMContentLoaded", () => {
         pages.forEach((page) => {
             page.classList.add("hidden");
         });
-    
+
         // Mostrar a página solicitada
         document.getElementById(pageId).classList.remove("hidden");
-    
+
         // Atualizar os dados com base na página
         switch (pageId) {
             case "start":
@@ -298,7 +298,7 @@ async function loadProducts() {
         emptyOption.textContent = 'Selecione'; // Texto visível
         emptyOption.disabled = true; // Impede seleção
         emptyOption.selected = true; // Define como a opção padrão
-        productSelect.appendChild(emptyOption);          
+        productSelect.appendChild(emptyOption);
 
         // Preenche o dropdown de produtos
         products.forEach(product => {
@@ -404,7 +404,7 @@ async function updateStock(stockId) {
             console.error('Erro do servidor:', errorDetails);
             alert(errorDetails.message);
             throw new Error(errorDetails.error || 'Erro ao atualizar estoque');
-            
+
         }
 
         clearFormStock();
@@ -521,7 +521,7 @@ async function loadProductsSales() {
         if (!response.ok) throw new Error('Erro ao buscar produtos');
         const data = await response.json();
         const products = data.produtos || [];
-        
+
         // Limpa as opções existentes no dropdown
         productSaleSelect.innerHTML = '';
 
@@ -531,7 +531,7 @@ async function loadProductsSales() {
         emptyOption.textContent = 'Selecione'; // Texto visível
         emptyOption.disabled = true; // Impede seleção
         emptyOption.selected = true; // Define como a opção padrão
-        productSaleSelect.appendChild(emptyOption);        
+        productSaleSelect.appendChild(emptyOption);
 
         products.forEach(product => {
             const option = document.createElement('option');
@@ -615,6 +615,39 @@ async function finalizeSale() {
         return;
     }
 
+    // === Campos e elementos relacionados ao frete ===
+    const deliveryRadios = document.getElementsByName('deliveryType');
+    const shippingInfoDiv = document.getElementById('shippingInfo');
+
+    const cepInput = document.getElementById('cep');
+    const logradouroInput = document.getElementById('logradouro');
+    const numeroInput = document.getElementById('numero');
+    const complementoInput = document.getElementById('complemento');
+    const bairroInput = document.getElementById('bairro');
+    const cidadeInput = document.getElementById('cidade');
+    const ufInput = document.getElementById('uf');
+    const consultaCEPButton = document.getElementById('consultaCEP');
+
+    // Campos obrigatórios para entrega
+    const shippingRequiredFields = [
+        cepInput,
+        numeroInput,
+        logradouroInput,
+        bairroInput,
+        cidadeInput,
+        ufInput
+    ];
+
+    // Verifica se a opção selecionada é Entrega
+    const selectedDeliveryType = document.querySelector('input[name="deliveryType"]:checked').value;
+    if (selectedDeliveryType === 'entrega') {
+        const missingField = shippingRequiredFields.some(field => !field.value || field.value.trim() === '');
+        if (missingField) {
+            alert("Por favor, preencha todos os campos obrigatórios para entrega (CEP, Número, Logradouro, Bairro, Cidade e UF).");
+            return;
+        }
+    }
+
     const saleCodeInput = document.getElementById('saleCode');
     const saleData = {
         codigo: saleCodeInput.value, // Código único da venda
@@ -624,6 +657,19 @@ async function finalizeSale() {
             preco: item.preco_unitario, // Inclui o preço do produto
         })), // Mapeia os itens para o formato esperado
     };
+
+    // Se o método for entrega, inclui os dados de frete
+    if (selectedDeliveryType === 'entrega') {
+        saleData.frete = {
+            cep: cepInput.value.trim(),
+            logradouro: logradouroInput.value.trim(),
+            numero: parseInt(numeroInput.value.trim()),
+            complemento: complementoInput.value.trim(),
+            bairro: bairroInput.value.trim(),
+            cidade: cidadeInput.value.trim(),
+            uf: ufInput.value.trim()
+        };
+    }
 
     try {
         const response = await fetch(`${API_BASE_URL}/vendas`, {
@@ -669,10 +715,118 @@ function clearSale() {
 
 // Event listeners
 addItemButton.addEventListener('click', addItemToSale);
-finalizeSaleButton.addEventListener('click', finalizeSale);
+//finalizeSaleButton.addEventListener('click', finalizeSale);
 
 document.addEventListener('DOMContentLoaded', () => {
     const saleCodeInput = document.getElementById('saleCode');
     saleCodeInput.value = generateSaleCode(); // Gera o código da venda uma vez
 });
 //Fim Venda
+
+//Frete e Integração com o ViaCEP
+document.addEventListener('DOMContentLoaded', function () {
+    // === Campos e elementos relacionados ao frete ===
+    const deliveryRadios = document.getElementsByName('deliveryType');
+    const shippingInfoDiv = document.getElementById('shippingInfo');
+
+    const cepInput = document.getElementById('cep');
+    const logradouroInput = document.getElementById('logradouro');
+    const numeroInput = document.getElementById('numero');
+    const complementoInput = document.getElementById('complemento');
+    const bairroInput = document.getElementById('bairro');
+    const cidadeInput = document.getElementById('cidade');
+    const ufInput = document.getElementById('uf');
+    const consultaCEPButton = document.getElementById('consultaCEP');
+
+    // Campos obrigatórios para entrega
+    const shippingRequiredFields = [
+        cepInput,
+        numeroInput,
+        logradouroInput,
+        bairroInput,
+        cidadeInput,
+        ufInput,
+    ];
+
+    // Função para limpar os campos de frete
+    function clearShippingInfo() {
+        shippingRequiredFields.forEach(field => field.value = '');
+        complementoInput.value = '';
+        deliveryRadios.value = 'retirada';
+    }
+
+    // Função para definir ou remover "required" dos campos obrigatórios
+    function setShippingRequired(isRequired) {
+        shippingRequiredFields.forEach(field => {
+            field.required = isRequired;
+        });
+    }
+
+    // Listener para alternar entre Retirada e Entrega
+    deliveryRadios.forEach(radio => {
+        radio.addEventListener('change', function () {
+            clearShippingInfo();
+            if (this.value === 'entrega') {
+                shippingInfoDiv.style.display = 'block';
+                setShippingRequired(true);
+            } else {
+                shippingInfoDiv.style.display = 'none';
+                setShippingRequired(false);
+            }
+        });
+    });
+
+    // Integração com a API ViaCEP para consulta do CEP
+    consultaCEPButton.addEventListener('click', function () {
+        let cep = cepInput.value.replace('-', '').trim();
+        if (cep && cep.length === 8) {
+            fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.erro) {
+                        alert('CEP não encontrado.');
+                    } else {
+                        logradouroInput.value = data.logradouro || '';
+                        bairroInput.value = data.bairro || '';
+                        cidadeInput.value = data.localidade || '';
+                        ufInput.value = data.uf || '';
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro na consulta do CEP:', error);
+                    alert('Erro ao consultar o CEP.');
+                });
+        } else {
+            alert('Digite um CEP válido (8 dígitos).');
+        }
+    });
+
+    // Evento unificado para finalizar a venda
+    document.getElementById('finalizeSale').addEventListener('click', async function (e) {
+        e.preventDefault();
+
+        // Valida se há itens na venda
+        if (saleItems.length === 0) {
+            alert('Adicione pelo menos um item à venda.');
+            return;
+        }
+
+        // Verifica se a opção selecionada é Entrega e valida os campos de frete
+        const selectedDeliveryType = document.querySelector('input[name="deliveryType"]:checked').value;
+        if (selectedDeliveryType === 'entrega') {
+            const missingField = shippingRequiredFields.some(field => !field.value || field.value.trim() === '');
+            if (missingField) {
+                alert("Por favor, preencha todos os campos obrigatórios para entrega (CEP, Número, Logradouro, Bairro, Cidade e UF).");
+                return;
+            }
+        }
+
+        // Se as validações passarem, finalize a venda
+        finalizeSale();
+
+        // Limpa os campos de frete e reseta os dados da venda
+        clearShippingInfo();
+    });
+
+    // === Outras funções e lógica do sistema (produtos, estoques, vendas, etc.) ===
+});
