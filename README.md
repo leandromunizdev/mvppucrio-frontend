@@ -10,8 +10,8 @@ Uma interface desenvolvida em HTML 5, JavaScript e CSS que gerencia o cadastrame
 - **Controle de Estoque:** Monitora a quantidade de itens disponíveis.
 - **Registro de Vendas:** Processa e armazena informações das vendas realizadas.
 - **Busca de Cep:** Busca de CEP para retornar um endereço de entrega através da api ViaCEP.
-  _Endpoint Utilizado:_ GET - viacep.com.br/ws/<CEP>/json/
-  _API Gratuita:_ A API é pública e não há necessedidade de cadastro prévio para sua utilização.
+  \\n*Endpoint Utilizado:* GET - viacep.com.br/ws/<CEP>/json/
+  \\n*API Gratuita:* A API é pública e não há necessedidade de cadastro prévio para sua utilização.
 
 ## Diagrama da solução
 
