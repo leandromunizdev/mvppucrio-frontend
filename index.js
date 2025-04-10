@@ -801,7 +801,80 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Evento unificado para finalizar a venda
+    // Declaração global para armazenar formas de pagamento
+    let paymentMethods = [];
+
+    // Função para calcular o total dos pagamentos adicionados
+    function getTotalPayments() {
+        return paymentMethods.reduce((sum, payment) => sum + payment.valor, 0);
+    }
+
+    // Atualiza os elementos do resumo de pagamento
+    function updatePaymentSummary() {
+        // Atualiza a exibição do total da venda (subtotal)
+        document.getElementById('subtotalDisplay').textContent = subtotal.toFixed(2);
+
+        // Calcula e exibe o total pago
+        const totalPayments = getTotalPayments();
+        document.getElementById('paidAmount').textContent = totalPayments.toFixed(2);
+
+        // Calcula o valor restante
+        const remaining = subtotal - totalPayments;
+        document.getElementById('remainingAmount').textContent = remaining.toFixed(2);
+    }
+
+    // Adiciona forma de pagamento à lista
+    document.getElementById('addPayment').addEventListener('click', function () {
+        const paymentMethodSelect = document.getElementById('paymentMethod');
+        const paymentValueInput = document.getElementById('paymentValue');
+
+        const method = paymentMethodSelect.value;
+        const value = parseFloat(paymentValueInput.value);
+
+        if (!method || isNaN(value) || value <= 0) {
+            alert('Selecione um método de pagamento e insira um valor válido.');
+            return;
+        }
+
+        // Verifica se a forma de pagamento já foi adicionada
+        const existingPayment = paymentMethods.find(payment => payment.forma === method);
+        if (existingPayment) {
+            // Se já existir, soma o valor informado ao valor já registrado
+            existingPayment.valor += value;
+        } else {
+            // Caso contrário, adiciona um novo objeto de pagamento
+            paymentMethods.push({ forma: method, valor: value });
+        }
+
+        // Atualiza a lista visual e o resumo dos pagamentos
+        renderPaymentList();
+        updatePaymentSummary();
+
+        // Limpa os campos do formulário de pagamento
+        paymentMethodSelect.value = '';
+        paymentValueInput.value = '';
+    });
+
+    function renderPaymentList() {
+        const paymentList = document.getElementById('paymentList');
+        paymentList.innerHTML = '';
+
+        paymentMethods.forEach((payment, index) => {
+            const li = document.createElement('li');
+            li.textContent = `${payment.forma}: R$ ${payment.valor.toFixed(2)}`;
+            const btnRemove = document.createElement('button');
+            btnRemove.textContent = 'Remover';
+            btnRemove.addEventListener('click', function () {
+                paymentMethods.splice(index, 1);
+                renderPaymentList();
+                updatePaymentSummary();
+            });
+            li.appendChild(btnRemove);
+            paymentList.appendChild(li);
+        });
+    }
+
+    // Função unificada para finalizar a venda (incluindo frete e pagamentos)
     document.getElementById('finalizeSale').addEventListener('click', async function (e) {
         e.preventDefault();
 
@@ -821,12 +894,87 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        // Se as validações passarem, finalize a venda
-        finalizeSale();
+        // Calcula a soma dos pagamentos
+        const totalPayments = getTotalPayments();
 
-        // Limpa os campos de frete e reseta os dados da venda
-        clearShippingInfo();
+        // Verifica se o valor pago é igual ao subtotal da venda
+        if (totalPayments !== subtotal) {
+            alert(`O valor pago (R$ ${totalPayments.toFixed(2)}) não corresponde ao valor total da venda (R$ ${subtotal.toFixed(2)}). Por favor, ajuste os pagamentos.`);
+            return;
+        }
+
+        // Monta o objeto da venda
+        const saleCodeInput = document.getElementById('saleCode');
+        const saleData = {
+            codigo: saleCodeInput.value,
+            itens: saleItems.map(item => ({
+                produto_id: item.produto_id,
+                quantidade: item.quantidade,
+                preco: item.preco_unitario,
+            })),
+            // Inclui o objeto de frete, se a entrega estiver selecionada
+            frete: selectedDeliveryType === 'entrega' ? {
+                cep: document.getElementById('cep').value.trim(),
+                logradouro: document.getElementById('logradouro').value.trim(),
+                numero: parseInt(document.getElementById('numero').value.trim()),
+                complemento: document.getElementById('complemento').value.trim(),
+                bairro: document.getElementById('bairro').value.trim(),
+                cidade: document.getElementById('cidade').value.trim(),
+                uf: document.getElementById('uf').value.trim()
+            } : null,
+            // Inclui as formas de pagamento adicionadas (pode estar vazio se nenhum pagamento for informado)
+            pagamentos: paymentMethods
+        };
+
+        try {
+            fetch("http://localhost:5000/vendas", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(saleData)
+            })
+                .then(async (response) => {
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        let errorMessage = "";
+
+                        if (Array.isArray(errorData)) {
+                            // Mapeia cada erro para uma mensagem com a "localização" e a mensagem
+                            errorMessage = errorData
+                                .map(err => `Erro no campo ${err.loc.join(" -> ")}: ${err.msg}`)
+                                .join("\n");
+                        } else if (typeof errorData === "object" && errorData.message) {
+                            errorMessage = errorData.message;
+                        } else {
+                            errorMessage = "Erro desconhecido ao finalizar venda.";
+                        }
+
+                        throw new Error(errorMessage);
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log("Venda finalizada com sucesso:", data);
+                    alert('Venda finalizada com sucesso');
+                    clearShippingInfo();
+                    clearSale();
+                    // Reseta as formas de pagamento
+                    paymentMethods = [];
+                    renderPaymentList();
+                    updatePaymentSummary();
+                })
+                .catch((error) => {
+                    console.error("Erro:", error.message);
+                    alert("Erro ao finalizar venda:\n" + error.message);
+                });
+
+
+
+        } catch (err) {
+            console.error(err.message);
+            alert(err.message);
+        }
     });
 
     // === Outras funções e lógica do sistema (produtos, estoques, vendas, etc.) ===
 });
+

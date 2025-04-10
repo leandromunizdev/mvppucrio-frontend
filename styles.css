@@ -273,3 +273,84 @@ textarea:valid {
   .hidden {
     display: none;
   }
+
+  /* Container que agrupa a área de frete e a área de pagamento */
+.delivery-payment-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* Define tamanhos e aparência para as colunas */
+  .shipping-container,
+  .payment-container {
+    flex: 1;
+    min-width: 300px;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    background-color: #f9f9f9;
+  }
+  
+  /* Ajusta títulos dentro desses containers */
+  .shipping-container h3,
+  .payment-container h3 {
+    margin-top: 0;
+  }
+  
+  /* Reaproveita estilos para as linhas do formulário */
+  .form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  
+  .form-row label {
+    width: 120px;
+    font-weight: bold;
+    margin-right: 0.5rem;
+  }
+  
+  .form-row input[type="text"],
+  .form-row input[type="number"],
+  .form-row textarea,
+  .form-row select {
+    flex: 1;
+    padding: 0.3rem;
+  }
+  
+  /* Botão Consultar CEP */
+  #consultaCEP {
+    margin-left: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    cursor: pointer;
+  }
+  
+  /* Estilo para a lista de pagamentos */
+  #paymentList {
+    list-style: none;
+    padding: 0;
+    margin-top: 0.5rem;
+  }
+  
+  #paymentList li {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 0.3rem;
+    margin-bottom: 0.3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  #paymentList li button {
+    padding: 0.2rem 0.5rem;
+    cursor: pointer;
+  }
+  
+  /* Media query para telas menores: empilha os containers verticalmente */
+  @media (max-width: 768px) {
+    .delivery-payment-container {
+      flex-direction: column;
+    }
+  }
